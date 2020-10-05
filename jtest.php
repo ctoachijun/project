@@ -1,6 +1,9 @@
 <?php
 
-echo "테스트라고";
+$a = "전부 다 지웠음.";
 
-echo "one more";
+
+
+echo $a;
+
 ?>
