@@ -49,7 +49,7 @@
               <?=number_format($row['opt_price_1'])?>원
             </label>
           </p>
-      <?}else{?>
+      <?}else if($row['opt_id']!=89 && $row['opt_id']!=90 && $row['opt_id']!=91){?>
           <input type="hidden" name="opt_id[]" value="<?=$row['opt_id']?>">
       <?}?>
     <?}?>

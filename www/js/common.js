@@ -1325,30 +1325,29 @@ function get_write_token(bo_table)
 }
 function okimp(count){
   var s = 0;
-
   if(count!=0){
     var box = $("input[name='opt_id[]']").length;
     var box2 = $("input[name='opt_id[]']");
-
+    var nopt_id = new Array(count);
+    // var acount = 0;
     for(var i=0; i<box; i++){
       if(box2[i].checked){
+        nopt_id[i] = box2[i].value;
         s++;
+        // acount++;
       }
     }
+     // console.log(nopt_id);
 
     if(s==0){
       alert("옵션을 선택 해 주세요.");
     }else{
-      console.log("전송");
       $('#opt_form').submit();
     }
   }else{
     alert("선택할 옵션이 없습니다");
   }
 }
-
-
-
 
 
 $(function() {
