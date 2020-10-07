@@ -1349,6 +1349,28 @@ function okimp(count){
   }
 }
 
+function update_rc(classname,rc_idx){
+
+  var form = $("#insert_memo");
+  var memo = $("#rc_memo"+rc_idx);
+
+  $("#rc_idx").val(rc_idx);
+  $("#rc_memo").val(memo.val());
+
+  // console.log($("#rc_idx").val());
+  // console.log($("#rc_memo").val());
+  // console.log($("input[name=ro_idx]").val());
+
+  if(!memo.val()){
+    alert("남기는말을 입력 해 주세요.");
+  }else{
+    console.log("전송");
+    form.submit();
+  }
+
+}
+
+
 
 $(function() {
     $(document).on("click", "form[name=fwrite] input:submit, form[name=fwrite] button:submit, form[name=fwrite] input:image", function() {

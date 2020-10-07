@@ -192,9 +192,25 @@ include_once('../../../../common.php');
       // echo $sql;
       sql_query($sql);
       alert("결제창으로 넘어갑니다.","https://dmonster926.cafe24.com/theme/cookie/mobile/app/add_routine_option.php?rc_idx={$rc_idx}");
-      break;
+    break;
+    case 'update_rc_memo':
+
+      $sql = "UPDATE routine_content
+              SET rc_memo = '{$rc_memo}'
+              WHERE rc_idx = '{$rc_idx}'";
+       // echo "sql : ".$sql;
+      // echo "<br>";
+      sql_query($sql);
+      alert("등록되었습니다.","https://dmonster926.cafe24.com/theme/cookie/mobile/app/routine_detail.php?ro_idx={$ro_idx}");
+
+
+    break;
+
+
+
 
   }
+
 
 ?>
 
