@@ -78,7 +78,7 @@ $rs_p = sql_query($sql_p);
             <input type="radio" value="card" name="wa_card" checked>카드
           </label>
           <label>
-            <input type="radio" value="card" name="nu" >무통장
+            <input type="radio" value="mu" name="wa_card" >무통장
           </label>
         </td>
         <th scope="row">실제결제가격</th>

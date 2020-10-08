@@ -10,6 +10,9 @@ function search_member(){
   var data_list = {"work_mode":"search_member","mb_id":mb_id};
   var add_box = "";
   var car_box = "";
+  var in_box = "";
+  console.log(mb_id);
+
   $.ajax({
           url: "proc_ajax.php",
           type: "post",
@@ -18,7 +21,7 @@ function search_member(){
   }).done(function(data){
     var json = JSON.parse(data);
     if(json.state == "Y"){
-      console.log(json);
+      // console.log(json);
       for (var i = 0; i < json.j_add.length; i++) {
         add_box += '<label>';
         if(i==0){
@@ -29,6 +32,8 @@ function search_member(){
         add_box += json.j_add[i].add_addr1;
         add_box += '</label><br>';
       }
+
+      console.log(json.j_in);
       for (var i = 0; i < json.j_car.length; i++) {
         car_box += '<label>';
         if(i==0){
@@ -42,6 +47,16 @@ function search_member(){
         car_box += json.j_car[i].mo_price+"원";
         car_box += '</label><br>';
       }
+      for (var i = 0; i < json.j_in.length; i++){
+        console.log(json.j_in[i].mp_idx);
+        in_box += '<label>';
+        in_box += '<input type="checkbox" name="opt_in[]" value="'+json.j_in[i].mp_idx+'" >';
+        in_box += json.j_in[i].mp_name+" ";
+        in_box += json.j_in[i].mp_price+' 원';
+        in_box += '</label><br><br>';
+      }
+
+
     }else {
       alert("입력하신 아이디에 정보를 찾을 수 없습니다");
       add_box = "원하시는 주소목록이 없습니다.";
@@ -49,6 +64,7 @@ function search_member(){
     }
     $('#add_box').html(add_box);
     $("#car_box").html(car_box);
+    $("#in_box").html(in_box);
     //console.log(data);
     //con_count
   });
