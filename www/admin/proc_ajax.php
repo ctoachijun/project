@@ -144,6 +144,23 @@ switch ($work_mode) {
       sql_query($sql);
     }
   break;
+
+  case 'chk_in':
+    $sql_in = "SELECT * FROM cate_model_option WHERE mo_idx = {$mo_idx}";
+    $rs_in = sql_query($sql_in);
+    while ($row = sql_fetch_array($rs_in)) {
+      $chk_in[] = $row;
+    }
+
+    if(count($chk_in) > 0){
+      $output['state'] = "Y";
+      $output['chk_in'] = $chk_in;
+    }else {
+      $output['state'] = "N";
+    }
+    echo json_encode($output,JSON_UNESCAPED_UNICODE);
+
+  break;
 }
 
 ?>

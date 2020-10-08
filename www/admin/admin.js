@@ -11,7 +11,7 @@ function search_member(){
   var add_box = "";
   var car_box = "";
   var in_box = "";
-  console.log(mb_id);
+  // console.log(mb_id);
 
   $.ajax({
           url: "proc_ajax.php",
@@ -33,13 +33,13 @@ function search_member(){
         add_box += '</label><br>';
       }
 
-      console.log(json.j_in);
+      // console.log(json.j_in);
       for (var i = 0; i < json.j_car.length; i++) {
         car_box += '<label>';
         if(i==0){
-          car_box += '<input type="radio" name="mc_idx" value="'+json.j_car[i].mc_idx+'" checked>';
+          car_box += '<input type="radio" name="mc_idx" value="'+json.j_car[i].mc_idx+'" onclick="chk_in('+json.j_car[i].mo_idx+')" checked>';
         }else{
-          car_box += '<input type="radio" name="mc_idx" value="'+json.j_car[i].mc_idx+'">';
+          car_box += '<input type="radio" name="mc_idx" value="'+json.j_car[i].mc_idx+'" onclick="chk_in('+json.j_car[i].mo_idx+')">';
         }
         car_box += json.j_car[i].mc_make+" ";
         car_box += json.j_car[i].mc_model+" ";
@@ -48,7 +48,7 @@ function search_member(){
         car_box += '</label><br>';
       }
       for (var i = 0; i < json.j_in.length; i++){
-        console.log(json.j_in[i].mp_idx);
+        // console.log(json.j_in[i].mp_idx);
         in_box += '<label>';
         in_box += '<input type="checkbox" name="opt_in[]" value="'+json.j_in[i].mp_idx+'" >';
         in_box += json.j_in[i].mp_name+" ";
@@ -68,8 +68,40 @@ function search_member(){
     //console.log(data);
     //con_count
   });
+}
+
+// 내부옵션을 체크합니다.
+function chk_in(mo_idx){
+  var data_list = {"work_mode":"chk_in","mo_idx":mo_idx};
+  var in_box = "";
+
+  $.ajax({
+          url: "proc_ajax.php",
+          type: "post",
+          async: false,
+          data: data_list
+  }).done(function(data){
+    var json = JSON.parse(data);
+    if(json.state == "Y"){
+      console.log(json.chk_in.length);
+      for (var i = 0; i < json.chk_in.length; i++){
+        // console.log(json.j_in[i].mp_idx);
+        in_box += '<label>';
+        in_box += '<input type="checkbox" name="opt_in[]" value="'+json.chk_in[i].mp_idx+'" >';
+        in_box += json.chk_in[i].mp_name+" ";
+        in_box += json.chk_in[i].mp_price+' 원';
+        in_box += '</label><br><br>';
+      }
+    }
+    $("#in_box").html(in_box);
+  });
+
 
 }
+
+
+
+
 // 매니저를 채크합니다
 function man_ck(){
    let mb_id = $("#mb_id_man").val();
