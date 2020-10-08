@@ -161,6 +161,34 @@ switch ($work_mode) {
     echo json_encode($output,JSON_UNESCAPED_UNICODE);
 
   break;
+
+  case 'total_price':
+    $sql_m = "SELECT mo_idx,mc_area FROM mem_car WHERE mc_idx = {$mc_idx} && mb_id = '{$mb_id}'";
+    $rs_m = sql_query($sql_m);
+    while( $row = sql_fetch_array($rs_m) ){
+      $data1[] = $row;
+    }
+
+    $sql_total = "SELECT mo_price FROM cate_model WHERE mo_idx = ".$data1[0]['mo_idx'];
+    $rs_t = sql_query($sql_total);
+    while( $row = sql_fetch_array($rs_t) ){
+      $b_data[] = $row;
+    }
+
+
+    if($data1){
+      $output['state'] = "Y";
+      $output['data1'] = $data1[0];
+      $output['b_data'] = $b_data;
+    }else{
+      $output['state'] = "N";
+      $output['total'] = $sql_total;
+    }
+    echo json_encode($output,JSON_UNESCAPED_UNICODE);
+
+  break;
+
+
 }
 
 ?>
