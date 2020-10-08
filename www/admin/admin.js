@@ -21,13 +21,21 @@ function search_member(){
       console.log(json);
       for (var i = 0; i < json.j_add.length; i++) {
         add_box += '<label>';
-        add_box += '<input type="radio" name="add_id" value="'+json.j_add[i].add_id+'">';
+        if(i==0){
+          add_box += '<input type="radio" name="add_id" value="'+json.j_add[i].add_id+'" checked>';
+        }else{
+          add_box += '<input type="radio" name="add_id" value="'+json.j_add[i].add_id+'">';
+        }
         add_box += json.j_add[i].add_addr1;
         add_box += '</label><br>';
       }
       for (var i = 0; i < json.j_car.length; i++) {
         car_box += '<label>';
-        car_box += '<input type="radio" name="mc_idx" value="'+json.j_car[i].mc_idx+'">';
+        if(i==0){
+          car_box += '<input type="radio" name="mc_idx" value="'+json.j_car[i].mc_idx+'" checked>';
+        }else{
+          car_box += '<input type="radio" name="mc_idx" value="'+json.j_car[i].mc_idx+'">';
+        }
         car_box += json.j_car[i].mc_make+" ";
         car_box += json.j_car[i].mc_model+" ";
         car_box += json.j_car[i].mc_color+" ";
