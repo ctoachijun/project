@@ -1364,13 +1364,11 @@ function update_rc(classname,rc_idx){
   if(!memo.val()){
     alert("남기는말을 입력 해 주세요.");
   }else{
-    console.log("전송");
+    // console.log("전송");
     form.submit();
   }
 
 }
-
-
 
 $(function() {
     $(document).on("click", "form[name=fwrite] input:submit, form[name=fwrite] button:submit, form[name=fwrite] input:image", function() {

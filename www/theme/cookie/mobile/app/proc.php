@@ -186,12 +186,34 @@ include_once('../../../../common.php');
     break;
     case 'update_routine_option':
       $rc_option = implode("|",$opt_id);
-      $sql = "UPDATE routine_content
-              SET rc_option = '{$rc_option}'
-              WHERE rc_idx = '{$rc_idx}'";
-      // echo $sql;
+
+      // 기존의 업데이트 쿼리문이 삭제되고 다른걸로 바뀌어있음.
+      // $sql = "UPDATE routine_content
+      //         SET rc_option = '{$rc_option}'
+      //         WHERE rc_idx = '{$rc_idx}'";
+      // // echo $sql;
+      // sql_query($sql);
+      // alert("결제창으로 넘어갑니다.","https://dmonster926.cafe24.com/theme/cookie/mobile/app/add_routine_option.php?rc_idx={$rc_idx}");
+
+
+      for ($i=0; $i <count($opt_id); $i++){
+        $opt_id_text[] = "(opt_id = '{$opt_id[$i]}')";
+      }
+      $where = implode("OR ",$opt_id_text);
+      $sqls = "SELECT SUM(opt_price_2) AS sums FROM cc_option
+               WHERE {$where}";
+      $sums = sql_fetch($sqls);
+      $rc_price = $sums['sums'];
+      $sql = "INSERT INTO option_temp SET
+              rc_option = '{$rc_option}',
+              rc_idx = '{$rc_idx}',
+              rc_price = '{$rc_price}'";
       sql_query($sql);
-      alert("결제창으로 넘어갑니다.","https://dmonster926.cafe24.com/theme/cookie/mobile/app/add_routine_option.php?rc_idx={$rc_idx}");
+      $op_idx = sql_insert_id();
+      alert("완료 후 화면으로 넘어갑니다.","https://dmonster926.cafe24.com/theme/cookie/mobile/app/routine_detail.php?ro_idx={$ro_idx}");
+
+
+
     break;
     case 'update_rc_memo':
 
@@ -206,13 +228,24 @@ include_once('../../../../common.php');
 
     break;
 
-
-
-
   }
-
-
 ?>
+
+<?if($work_mode == "update_routine_option"){?>
+  <?$dates = date("Ymdhms");?>
+  <form name="wa_form" action="https://webapi.jadong2che.com/v1/nif/payment/ksnet/gate" method="post">
+    <input type="hidden" name="companyCode" value="C2020060900031"/>
+    <input type="hidden" name="returnUrl" value="https://dmonster926.cafe24.com/theme/cookie/mobile/app/routine_detail.php?ro_idx=<?=$ro_idx?>"/>
+    <input type="hidden" name="userName" value="<?=$member['mb_id']?>"/>
+    <input type="hidden" name="registNumber" value="<?=$op_idx?>"/>
+    <input type="hidden" name="goodsName" value="<?=$rc_idx?>_옵션추가"/>
+    <input type="hidden" name="cost" value="<?=$rc_price?>"/>
+  </form>
+  <script>
+    wa_form.submit();
+  </script>
+<?}?>
+
 
 <?if($wa_card == "card" && $work_mode == "wa_add"){?>
   <form name="wa_form" action="/mobile/shop/kcp/order_car.php" method="post">
@@ -224,14 +257,6 @@ include_once('../../../../common.php');
     wa_form.submit();
   </script>
 <?}?>
-
-
-<?if($wa_card == "card" && $work_mode == "update_routine_option"){?>
-
-
-<?}?>
-
-
 
 
 <?if($work_mode == "add_routine"){?>

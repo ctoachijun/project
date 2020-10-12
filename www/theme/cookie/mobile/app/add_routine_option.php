@@ -15,7 +15,8 @@
   $sql = "SELECT * FROM routine_content WHERE rc_idx = '{$rc_idx}'";
   $rs = sql_fetch($sql);
   $chk_count = 0;
-?>
+
+  ?>
 <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js" ></script>
 <script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.1.5.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
@@ -28,7 +29,9 @@
   <!-- <form action="./add_routine_option.php" method="post" accept-charset="utf-8" enctype="multipart/form-data"> -->
     <input type="hidden" name="work_mode" value="update_routine_option">
     <input type="hidden" name="rc_idx" value="<?=$rc_idx?>">
+    <input type="hidden" name="ro_idx" value="<?=$ro_idx?>">
     <?while($row =sql_fetch_array($rso)){
+
         //  if(!strpos($rs['rc_option'],$row['opt_id'])){
         //  strpos값이 0일때 1로 바꿈
         // 월세차에 포함되어있는 옵션 표시안함
@@ -49,6 +52,8 @@
               <?=number_format($row['opt_price_1'])?>원
             </label>
           </p>
+
+          <!-- 월세차에 포함된 옵션 미표시 -->
       <?}else if($row['opt_id']!=89 && $row['opt_id']!=90 && $row['opt_id']!=91){?>
           <input type="hidden" name="opt_id[]" value="<?=$row['opt_id']?>">
       <?}?>
