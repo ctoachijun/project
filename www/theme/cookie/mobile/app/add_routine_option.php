@@ -16,7 +16,35 @@
   $rs = sql_fetch($sql);
   $chk_count = 0;
 
+  // 결제 후 값을받아서 정상적인 가격에 결제가 되었는지 체크
+  //echo "op_idx : ".$op_idx."<br>";
+  if($op_idx){
+    $sql_oc = "SELECT * FROM option_temp WHERE op_idx = {$op_idx}";
+    $rs_oc = sql_fetch($sql_oc);
+    $c_price = $rs_oc['rc_price'];
+    $opt_val = $rs_oc['rc_option'];
+    // echo "결제 된 옵션은 : ".$opt_val."<br>";
+    // echo "결제할 가격은 : ".$c_price."<br>";
+
+    if($c_price == 5500){
+      // 결제성공
+      $sql = "UPDATE routine_content
+              SET rc_option = '{$opt_val}'
+              WHERE rc_idx = '{$rc_idx}'";
+      // sql_query($sql);
+      // echo $sql;
+      //alert("결제에 성공했습니다.");
+
+    }else{
+      // 결제실패
+      //alert("결제에 실패했습니다.");
+    }
+
+    // echo "<br>";
+    // var_dump($_POST);
+  }
   ?>
+
 <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js" ></script>
 <script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.1.5.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>

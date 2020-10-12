@@ -188,12 +188,12 @@ include_once('../../../../common.php');
       $rc_option = implode("|",$opt_id);
 
       // 기존의 업데이트 쿼리문이 삭제되고 다른걸로 바뀌어있음.
+      // 선택한 옵션 안보이도록 처리
+      // 결제가 성공하면 업데이트 하는걸로..
       // $sql = "UPDATE routine_content
       //         SET rc_option = '{$rc_option}'
       //         WHERE rc_idx = '{$rc_idx}'";
-      // // echo $sql;
       // sql_query($sql);
-      // alert("결제창으로 넘어갑니다.","https://dmonster926.cafe24.com/theme/cookie/mobile/app/add_routine_option.php?rc_idx={$rc_idx}");
 
 
       for ($i=0; $i <count($opt_id); $i++){
@@ -210,8 +210,7 @@ include_once('../../../../common.php');
               rc_price = '{$rc_price}'";
       sql_query($sql);
       $op_idx = sql_insert_id();
-      alert("완료 후 화면으로 넘어갑니다.","https://dmonster926.cafe24.com/theme/cookie/mobile/app/routine_detail.php?ro_idx={$ro_idx}");
-
+      //alert("완료 후 화면으로 넘어갑니다.","https://dmonster926.cafe24.com/theme/cookie/mobile/app/routine_detail.php?ro_idx={$ro_idx}");
 
 
     break;
@@ -235,7 +234,7 @@ include_once('../../../../common.php');
   <?$dates = date("Ymdhms");?>
   <form name="wa_form" action="https://webapi.jadong2che.com/v1/nif/payment/ksnet/gate" method="post">
     <input type="hidden" name="companyCode" value="C2020060900031"/>
-    <input type="hidden" name="returnUrl" value="https://dmonster926.cafe24.com/theme/cookie/mobile/app/routine_detail.php?ro_idx=<?=$ro_idx?>"/>
+    <input type="hidden" name="returnUrl" value="https://dmonster926.cafe24.com/theme/cookie/mobile/app/add_routine_option.php?op_idx=<?=$op_idx?>"/>
     <input type="hidden" name="userName" value="<?=$member['mb_id']?>"/>
     <input type="hidden" name="registNumber" value="<?=$op_idx?>"/>
     <input type="hidden" name="goodsName" value="<?=$rc_idx?>_옵션추가"/>
