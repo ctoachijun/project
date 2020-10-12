@@ -1328,16 +1328,17 @@ function okimp(count){
   if(count!=0){
     var box = $("input[name='opt_id[]']").length;
     var box2 = $("input[name='opt_id[]']");
-    var nopt_id = new Array(count);
+    var nopt_id = new Array();
     // var acount = 0;
     for(var i=0; i<box; i++){
       if(box2[i].checked){
-        nopt_id[i] = box2[i].value;
+        nopt_id[s] = box2[i].value;
         s++;
         // acount++;
       }
     }
 
+    // console.log(nopt_id);
     // 체크 된 opt_id 만 넘김. hidden 값은 제외.
     $("input[name='opt_id[]']").val(nopt_id);
 
