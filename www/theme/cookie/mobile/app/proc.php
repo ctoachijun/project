@@ -237,7 +237,7 @@ include_once('../../../../common.php');
   <?$dates = date("YmdHis");?>
   <form name="wa_form" action="https://webapi.jadong2che.com/v1/nif/payment/ksnet/gate" method="post">
     <input type="hidden" name="companyCode" value="C2020060900031"/>
-    <input type="hidden" name="returnUrl" value="https://dmonster926.cafe24.com/theme/cookie/mobile/app/add_routine_option.php?&op_idx=<?=$op_idx?>&rc_idx=<?=$rc_idx?>"/>
+    <input type="hidden" name="returnUrl" value="https://dmonster926.cafe24.com/theme/cookie/mobile/app/add_routine_option.php?&op_idx=<?=$op_idx?>"/>
     <input type="hidden" name="userName" value="<?=$member['mb_id']?>"/>
     <input type="hidden" name="registNumber" value="<?=$op_idx?>"/>
     <input type="hidden" name="goodsName" value="<?=$rc_idx?>_옵션추가_<?=$dates?>"/>
