@@ -16,6 +16,8 @@
   $rs = sql_fetch($sql);
   $chk_count = 0;
 
+
+  var_dump($_POST);
   // 결제 후 값을받아서 정상적인 가격에 결제가 되었는지 체크
   //echo "op_idx : ".$op_idx."<br>";
   if($op_idx){
@@ -41,7 +43,7 @@
     }
 
     // echo "<br>";
-    // var_dump($_POST);
+
   }
   ?>
 
@@ -57,7 +59,6 @@
   <!-- <form action="./add_routine_option.php" method="post" accept-charset="utf-8" enctype="multipart/form-data"> -->
     <input type="hidden" name="work_mode" value="update_routine_option">
     <input type="hidden" name="rc_idx" value="<?=$rc_idx?>">
-    <input type="hidden" name="ro_idx" value="<?=$ro_idx?>">
     <?while($row =sql_fetch_array($rso)){
 
         //  if(!strpos($rs['rc_option'],$row['opt_id'])){
@@ -83,6 +84,7 @@
 
           <!-- 월세차에 포함된 옵션 미표시 -->
       <?}else if($row['opt_id']!=89 && $row['opt_id']!=90 && $row['opt_id']!=91){?>
+
           <input type="hidden" name="opt_id[]" value="<?=$row['opt_id']?>">
       <?}?>
     <?}?>

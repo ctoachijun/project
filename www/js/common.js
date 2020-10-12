@@ -1337,7 +1337,9 @@ function okimp(count){
         // acount++;
       }
     }
-     // console.log(nopt_id);
+
+    // 체크 된 opt_id 만 넘김. hidden 값은 제외.
+    $("input[name='opt_id[]']").val(nopt_id);
 
     if(s==0){
       alert("옵션을 선택 해 주세요.");
