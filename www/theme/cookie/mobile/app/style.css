@@ -137,6 +137,12 @@
 .btn_confirm {text-align:right;margin:20px 0;padding:0 10px;}
 .note{padding:8px 10px;margin-bottom:15px;font-size:14px;border:1px solid #f44336;border-radius:3px;color:#f44336;}
 .note_main{padding:8px 10px;margin-top:5px;margin-bottom:0;font-size:14px;border:1px solid #f44336;border-radius:3px;color:#f44336;}
+#p_result{border-collapse:collapse;width:100%;font-family: 'Noto Sans KR', sans-serif;}
+#p_result th,#p_result td{border:1px solid #eee;padding:20px 15px;}
+#p_result th{background-color:#f7f7f7;text-align:left;font-weight:500;}
+#p_box{width:100%;display:block;position:relative;height:97vh}
+#p_urls .wa_bnt{position:absolute;bottom:0;border:none;max-width:600px;width: 100%;line-height: 45px;height: 45px;font-size: 20px;background:linear-gradient( to right, #001484, #007fea ) ;color: #fff;cursor: pointer;box-shadow: 3px 3px 10px #909090;font-family:'Noto Sans KR', sans-serif;}
+.p_title{text-align:center;font-weight:600;font-size:20px;border-top:1px solid #eee;padding-top:15px;padding-bottom:10px;}
 @media (max-width: 969px){
   .mem_box{box-shadow: 3px 3px 10px #909090;}
   .mem_box .profile{height:610px;}

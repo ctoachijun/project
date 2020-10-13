@@ -12,36 +12,6 @@
 
 
 
-  // var_dump($_POST);
-  // 결제 후 값을받아서 정상적인 가격에 결제가 되었는지 체크
-  //echo "op_idx : ".$op_idx."<br>";
-  if($op_idx){
-    $sql_oc = "SELECT * FROM option_temp WHERE op_idx = {$op_idx}";
-    $rs_oc = sql_fetch($sql_oc);
-    $c_price = $rs_oc['rc_price'];
-    $opt_val = $rs_oc['rc_option'];
-    $rc_idx = $rs_oc['rc_idx'];
-    // echo "결제 된 옵션은 : ".$opt_val."<br>";
-    // echo "결제할 가격은 : ".$c_price."<br>";
-
-    if($_POST['status'] == "O"){
-      // 결제성공
-      $sql = "UPDATE routine_content
-              SET rc_option = '{$opt_val}'
-              WHERE rc_idx = '{$rc_idx}'";
-      sql_query($sql);
-      // echo $sql;
-      alert("결제에 성공했습니다.");
-
-    }else{
-      // 결제실패
-      alert("결제에 실패했습니다.");
-    }
-
-  }
-  // echo "<br>";
-
-
   // 옵션가격 외제차 수입차 다르게
   $sql_o = "SELECT * FROM cc_option WHERE (1)";
   $rso = sql_query($sql_o);
@@ -62,6 +32,7 @@
   <!-- <form action="./add_routine_option.php" method="post" accept-charset="utf-8" enctype="multipart/form-data"> -->
     <input type="hidden" name="work_mode" value="update_routine_option">
     <input type="hidden" name="rc_idx" value="<?=$rc_idx?>">
+    <input type="hidden" name="chk_value[]">
     <?while($row =sql_fetch_array($rso)){
 
         //  if(!strpos($rs['rc_option'],$row['opt_id'])){

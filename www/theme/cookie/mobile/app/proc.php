@@ -185,21 +185,22 @@ include_once('../../../../common.php');
 
     break;
     case 'update_routine_option':
-      $rc_option = implode("|",$opt_id);
+      // $rc_option = implode("|",$opt_id);
 
-      // 기존의 업데이트 쿼리문이 삭제되고 다른걸로 바뀌어있음.
-      // 선택한 옵션 안보이도록 처리
-      // 결제가 성공하면 업데이트 하는걸로..
-      // $sql = "UPDATE routine_content
-      //         SET rc_option = '{$rc_option}'
-      //         WHERE rc_idx = '{$rc_idx}'";
-      // sql_query($sql);
-
+      // 체크된 것만 배열이 아닌 변수로 받아서 구분자 , 를 기준으로 배열로 저장.
+      // 이후 동작은 동일함
+      $chk_v = explode(",",$chk_value[0]);
+      $rc_option = implode("|",$chk_v);
 
       // 이미 선택되어 화면에 표시되지 않은 옵션이 인식되지않도록 처리.
-      for ($i=0; $i <count($opt_id); $i++){
-        $opt_id_text[] = "(opt_id = '{$opt_id[$i]}')";
+      // for ($i=0; $i <count($opt_id); $i++){
+      //   $opt_id_text[] = "(opt_id = '{$opt_id[$i]}')";
+      // }
+
+      for ($i=0; $i <count($chk_v); $i++){
+        $opt_id_text[] = "(opt_id = '{$chk_v[$i]}')";
       }
+
       $where = implode("OR ",$opt_id_text);
       $sqls = "SELECT SUM(opt_price_2) AS sums FROM cc_option
                WHERE {$where}";
@@ -212,7 +213,7 @@ include_once('../../../../common.php');
       sql_query($sql);
       $op_idx = sql_insert_id();
 
-      // echo $sqls;
+      // echo $sql;
       //alert("완료 후 화면으로 넘어갑니다.","https://dmonster926.cafe24.com/theme/cookie/mobile/app/routine_detail.php?ro_idx={$ro_idx}");
 
 
@@ -237,14 +238,14 @@ include_once('../../../../common.php');
   <?$dates = date("YmdHis");?>
   <form name="wa_form" action="https://webapi.jadong2che.com/v1/nif/payment/ksnet/gate" method="post">
     <input type="hidden" name="companyCode" value="C2020060900031"/>
-    <input type="hidden" name="returnUrl" value="https://dmonster926.cafe24.com/theme/cookie/mobile/app/add_routine_option.php?&op_idx=<?=$op_idx?>"/>
+    <input type="hidden" name="returnUrl" value="https://dmonster926.cafe24.com/theme/cookie/mobile/app/add_routine_option_proc.php?&op_idx=<?=$op_idx?>"/>
     <input type="hidden" name="userName" value="<?=$member['mb_id']?>"/>
     <input type="hidden" name="registNumber" value="<?=$op_idx?>"/>
     <input type="hidden" name="goodsName" value="<?=$rc_idx?>_옵션추가_<?=$dates?>"/>
     <input type="hidden" name="cost" value="<?=$rc_price?>"/>
   </form>
   <script>
-    wa_form.submit();
+     wa_form.submit();
   </script>
 <?}?>
 
