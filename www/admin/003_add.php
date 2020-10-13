@@ -11,15 +11,6 @@ $sql_p = " select * from cc_package where 1";
 $rs_o = sql_query($sql_o);
 $rs_p = sql_query($sql_p);
 
-// // 차량정보입니다.
-// $sql_car = "SELECT * FROM mem_car WHERE mc_idx = '{$rs['mc_idx']}'";
-// $rs_car = sql_fetch($sql_car);
-//
-// //var_dump($rs_car['mo_idx']);
-// // 내부옵션입니다.
-// $sql_in = "SELECT * FROM cate_model_option WHERE mo_idx = '{$rs_car['mo_idx']}'";
-// $rs_in = sql_query($sql_in);
-
 
 ?>
 <p>* 반드시 입력전에 회원아이디를 검색하고 차량과 주소를 선택한 후 입력완료를 눌러주세요</p><br>
@@ -63,27 +54,13 @@ $rs_p = sql_query($sql_p);
         <td colspan=1 class="td_id">
           <?while ($row = sql_fetch_array($rs_o)){?>
             <label>
-            <!-- <?
-            if($row['opt_id']==89){
-            ?>
-              <input type="checkbox" class="o<?=$row['opt_id']?>" value="<?=$row['opt_id']?>" name="wa_option[]" class="frm_input" onclick="nopt_ot()">
-            <?
-              echo $row['opt_name']."  국:".$row['opt_price_1']."  외:".$row['opt_price_2'];
-            }else{
-            ?>
-              <input type="checkbox" class="o<?=$row['opt_id']?>" value="<?=$row['opt_id']?>" name="wa_option[]" class="frm_input">
-            <?
-              echo $row['opt_name']."  국:".$row['opt_price_1']."  외:".$row['opt_price_2'];
-            }
-            ?>원 -->
-
-              <input type="checkbox" class="o<?=$row['opt_id']?>" value="<?=$row['opt_id']?>" name="wa_option[]" class="frm_input" onclick="calc_total()">
-                 <?=$row['opt_name']?> 국:<?=$row['opt_price_1']?> 외:<?=$row['opt_price_2']?>원
+              <input type="checkbox" class="" value="<?=$row['opt_id']?>" name="wa_option[]" class="frm_input">
+              <?=$row['opt_name']?> 국:<?=$row['opt_price_1']?> 외:<?=$row['opt_price_2']?>원
             </label>
             <br>
           <?}?>
         </td>
-        <!-- <th scope="row">패키지</th>
+        <th scope="row">패키지</th>
         <td colspan=1 class="td_id">
           <?while ($row = sql_fetch_array($rs_p)){?>
             <label>
@@ -92,12 +69,7 @@ $rs_p = sql_query($sql_p);
             </label>
             <br>
           <?}?>
-        </td> -->
-        <th scope="row">내부옵션</th>
-        <td colspan=1 class="td_id">
-          <div id="in_box"></div>
         </td>
-
       <tr>
       <tr>
         <th scope="row">결제종류</th>
@@ -106,19 +78,14 @@ $rs_p = sql_query($sql_p);
             <input type="radio" value="card" name="wa_card" checked>카드
           </label>
           <label>
-            <input type="radio" value="mu" name="wa_card" >무통장
+            <input type="radio" value="card" name="nu" >무통장
           </label>
         </td>
         <th scope="row">실제결제가격</th>
-
         <td colspan=1 class="td_id">
-          <div id="sum_total"></div>
-          <input type="submit" class="btn_submit" value="매칭신청 입력완료">
-        </td>
-        <!-- <td colspan=1 class="td_id">
           <input type="number" name="wa_price" placeholder="결제가격" class="frm_input">
           <input type="submit" class="btn_submit" value="매칭신청 입력완료">
-        </td> -->
+        </td>
 
       </tr>
     </form>

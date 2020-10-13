@@ -12,6 +12,7 @@ function search_member(){
   var add_box = "";
   var car_box = "";
   var in_box = "";
+  var bp_box = "";
   //console.log(mb_id);
 
   $.ajax({
@@ -39,9 +40,9 @@ function search_member(){
         car_box += '<label>';
         // car_box += '<input type="hidden" name="'+json.j_car[i].mc_idx+'" value="'+json.j_car[i].mc_area+'">';
         if(i==0){
-          car_box += '<input type="radio" name="mc_idx" value="'+json.j_car[i].mc_idx+'" onclick="chk_in('+json.j_car[i].mo_idx+');calc_total()" >';
+          car_box += '<input type="radio" name="mc_idx" value="'+json.j_car[i].mc_idx+'" onclick="chk_in('+json.j_car[i].mo_idx+');calc_total(4)" checked>';
         }else{
-          car_box += '<input type="radio" name="mc_idx" value="'+json.j_car[i].mc_idx+'" onclick="chk_in('+json.j_car[i].mo_idx+');calc_total()">';
+          car_box += '<input type="radio" name="mc_idx" value="'+json.j_car[i].mc_idx+'" onclick="chk_in('+json.j_car[i].mo_idx+');calc_total(4)">';
         }
         car_box += json.j_car[i].mc_make+" ";
         car_box += json.j_car[i].mc_model+" ";
@@ -57,6 +58,13 @@ function search_member(){
         in_box += json.j_in[i].mp_price+' 원';
         in_box += '</label><br><br>';
       }
+      // for (var i = 0; i < json.j_bp.length; i++){
+      //   bp_box += '<label>';
+      //   bp_box += '<input type="text" name="total_price" value="'+json.j_bp[i].mo_price+'" >';
+      //   bp_box += '</label><br><br>';
+      // }
+
+
 
 
     }else {
@@ -67,6 +75,7 @@ function search_member(){
     $('#add_box').html(add_box);
     $("#car_box").html(car_box);
     $("#in_box").html(in_box);
+    // $("#sum_total").html(bp_box);
     //console.log(data);
     //con_count
   });
@@ -101,15 +110,18 @@ function chk_in(mo_idx){
 
 
 // 총액을 계산합니다.
-function calc_total(){
+function calc_total(opt_id){
   let mb_id = $("#mb_id").val();
   let count = $("input[name='wa_option[]']").length;
   let box2 = $("input[name='wa_option[]']");
   let mc_idx = $(":radio[name='mc_idx']:checked").val();
-  let classname ="";
+  let classname = "";
+  let chk_sum = 0;
+  // let chk_opt = implode("|",box2);
+  let chk_opt = new Array();
   let sum_total = 0;  // 총액
+  let box;        // 총액 계산용
   let b_price = 0;   // 기본가격
-  let area;         // 국산, 외제
   let t_box = "";   // 총액 표시영역
   // console.log(typeof(sum_total));
 
@@ -123,9 +135,14 @@ function calc_total(){
     }
   }else{
 
+    // 총액 초기화
+    if(opt_id==4){
+      $("input[name=sum_total]").val(0);
+    }
+
+
     // 패키지 선택시 휠타이어 / 타르제거 비활성
     let jud = $(".o89").is(':checked');
-    // console.log($(".o90").val());
 
     if(jud){
       $(".o90").attr("disabled",true);
@@ -139,10 +156,33 @@ function calc_total(){
       $(".o91").val(91);
     }
 
-    console.log(mb_id+" "+mc_idx);
+    // 외부옵션 선택시 금액 계산
+    // var s = 0;
+    // for(var i=0; i < count; i++){
+    //   classname = "o"+box2[i].value;
+    //   if($("."+classname).is(":checked")){
+    //     chk_opt = $("."+classname).val();
+    //     s++;
+    //   }
+    // }
+
+
+    classname = "o"+opt_id;
+    if($("."+classname).is(":checked")){
+      chk_opt = $("."+classname).val();
+      chk_sum = 1;
+    }else{
+      chk_opt = $("."+classname).val();
+      chk_sum = 2;
+    }
+
+
+
+
+    // console.log(mb_id+" "+mc_idx);
 
     // 체크 된 옵션 계산 (기본금액 + 옵션금액)
-    let data_list = {"work_mode":"total_price","mb_id":mb_id,"mc_idx":mc_idx};
+    let data_list = {"work_mode":"total_price","mb_id":mb_id,"mc_idx":mc_idx,"chk_opt":chk_opt};
     $.ajax({
             url: "proc_ajax.php",
             type: "post",
@@ -150,40 +190,72 @@ function calc_total(){
             data: data_list
     }).done(function(data){
       let json = JSON.parse(data);
-      console.log(json.data1);
-      console.log(json.b_data[0].mo_price);
-      if(json.state == "Y"){
-        // console.log(json.chk_in.length);
-        // for (var i = 0; i < json.total.length; i++){
-        //   console.log(json.j_in[i].mp_idx);
-        //   in_box += '<label>';
-        //   in_box += '<input type="checkbox" name="opt_in[]" value="'+json._in[i].mp_idx+'" >';
-        //   in_box += json.chk_in[i].mp_name+" ";
-        //   in_box += json.chk_in[i].mp_price+' 원';
-        //   in_box += '</label><br><br>';
-        // }
-        sum_total += parseInt(json.b_data[0].mo_price);
+      sum_total += parseInt(json.b_data[0].mo_price);
+      // console.log(json.b_data[0].mo_price);
+      // console.log(json.data1);
+      // console.log(json.sql);
+      if(json.chk_opt){
+        if(json.data1['mc_area']=='국산차'){
+          box = parseInt(json.chk_opt.opt_price_1);
+          // sum_total += parseInt(json.chk_opt.opt_price_1);
+        }else{
+          box = parseInt(json.chk_opt.opt_price_2);
+          // sum_total += parseInt(json.chk_opt.opt_price_2);
+        }
+        // 총액이 0원. name=sum_total 에 값이 없으면 0으로 초기화.
+        if(sum_total == 0){
+          if(!$("input[name='sum_total']").val()){
+            $("input[name='sum_total']").val(0);
+          }
+          sum_total = parseInt($("input[name='sum_total']").val());
+        }
 
-        t_box += '<label>';
-        t_box += '<input type="text" name="total_price" value="'+sum_total+'" >';
-        t_box += '</label><br><br>';
+        sum_total += box;
+        console.log(chk_sum);
+        console.log(sum_total);
+        if(chk_sum==1){
+          if(jud){
+            console.log("패키지 체크<br>");
+          }
 
-        $("#sum_total").html(t_box);
+        }else if(chk_sum==2){
+          if($(".o90").is(":checked")){
+            console.log("휠타 체크<br>");
+            if(json.data1['mc_area']=='국산차'){
+              console.log("국산<br>");
+              sum_total = sum_total - box + 2200;
+            }else if(json.data1['mc_area']=='외제차'){
+              console.log("외제<br>");
+              sum_total = sum_total - box + 2200;
+            }
+          }else if($(".o91").is(":checked")){
+            if(json.data1['mc_area']=='국산차'){
+              sum_total -= box;
+            }else if(json.data1['mc_area']=='외제차'){
+              sum_total -= box;
+            }
+          }
+        }
 
+        $("input[name='sum_total']").val(sum_total);
+        // 패키지 선택시 체크된채 비활성화 된 항목 연산처리
+        // sum_total += box;
+
+        // console.log("input : "+$("input[name='sum_total']").val());
+        if(json.state == "Y"){
+          // sum_total += parseInt(json.b_data[0].mo_price);
+          console.log("sum : "+sum_total);
+          t_box += '<label>';
+          t_box += '<input type="text" name="total_price" value="'+sum_total+'" >';
+          t_box += '</label><br><br>';
+
+          $("#sum_total").html(t_box);
+        }
 
       }
       // $("#in_box").html(in_box);
     });
-
-
-
-
-  }
-
-
-
-
-
+  } // mb_id else close
 }
 
 
